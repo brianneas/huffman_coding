@@ -2,6 +2,8 @@
 // Student ID: C282H554
 // Assignment: 8
 
+// !!!! ADD Zero's back in!!!
+
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -159,30 +161,6 @@ void removeZeroEntries(vector<Node*>& letters) {
    }
 }
 
-void pre_order(Node* root) {
-   if (root) {
-      root->print();
-      pre_order(root->left);
-      pre_order(root->right);
-   }
-}
-
-void inOrder(Node* root) {
-   if (root) {
-      inOrder(root->left);
-      root->print();
-      inOrder(root->right);
-   }
-}
-
-void postOrder(Node* root) {
-   if (root) {
-      postOrder(root->left);
-      postOrder(root->right);
-      root->print();
-   }
-}
-
 // uses in order binary tree traversal to determine the huffman coding for each
 // letter
 void inOrderCoding(Node* root, vector<int>& code) {
@@ -210,11 +188,15 @@ void inOrderCoding(Node* root, vector<int>& code) {
       inOrderCoding(root->right, code); // call on right node
 
       // done with tree section, remove previous value from coding
-      code.pop_back();
+      if (!code.empty()) { // check that vector is not empty
+         code.pop_back();
+      }
    } else {
       // a null pointer has been reached, remove previous 0/1 push from the
       // function call above
-      code.pop_back();
+      if (!code.empty()) { // check that vector is not empty
+         code.pop_back();
+      }
    }
 
    return;
@@ -229,7 +211,7 @@ int main() {
    // populate vector full of classes representing letters
    populateVector(letters);
    import(letters); // import data from txt file into letter objects
-   removeZeroEntries(letters); // remove any letters with zero instances
+   //removeZeroEntries(letters); // remove any letters with zero instances
 
    // create root pointing at the huffman tree
    Node* root = buildHuffmanTree(letters);
