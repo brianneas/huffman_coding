@@ -2,8 +2,6 @@
 // Student ID: C282H554
 // Assignment: 8
 
-// !!!! ADD Zero's back in!!!
-
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -115,50 +113,12 @@ Node* buildHuffmanTree(vector<Node*>& letters) {
       int sumOfFreq = leftNode->frequency + rightNode->frequency;
       Node* sumNode = new Node('-', sumOfFreq, leftNode, rightNode);
 
-      // print out the new tree created
-      cout << "Parent Node: " << sumNode->letter << " Value: " << sumNode->frequency << endl;
-      cout << "Left Node: " << leftNode->letter << " Value: " << leftNode->frequency << endl;
-      cout << "Right Node: " << rightNode->letter << " Value: " << rightNode->frequency << endl;
-      cout << "--------" << endl;
-
       letters.push_back(sumNode); // push that new node to the vector
    }
 
    // only one node left in letters vector, which will now become your root
    Node* root = letters[0];
    return root;
-}
-
-// checks to see if there are any letters with a frequency of zero left in the
-// letters vector
-bool zeroFreqPresent(vector<Node*> letters) {
-   for (int i = 0; i < letters.size(); i++) {
-      if (letters[i]->frequency == 0) { // check frequency of each letter
-         return true;
-      }
-   }
-
-   return false;
-}
-
-// removes any zero frequency letters (nodes) in the letters vector
-void removeZeroEntries(vector<Node*>& letters) {
-   while(zeroFreqPresent(letters)) { // check for zero frequency letters
-      int position = 0;
-
-      // get position of the next zero frequency node
-      for (int i = 0; i < letters.size(); i++){
-         if (letters[i]->frequency == 0) {
-            position = i;
-         }
-      }
-
-      // release the allocated memory for the letter
-      delete letters[position];
-
-      // erase zero entry at that position in the vector
-      letters.erase((letters.begin() + position));
-   }
 }
 
 // uses in order binary tree traversal to determine the huffman coding for each
@@ -203,7 +163,7 @@ void inOrderCoding(Node* root, vector<int>& code) {
 }
 
 int main() {
-   cout << "Huffman Coding:" << endl;
+   cout << "Huffman Coding for letters in doc.txt:" << endl;
 
    // vector to store letter object nodes
    vector<Node*> letters;
@@ -211,17 +171,13 @@ int main() {
    // populate vector full of classes representing letters
    populateVector(letters);
    import(letters); // import data from txt file into letter objects
-   //removeZeroEntries(letters); // remove any letters with zero instances
 
    // create root pointing at the huffman tree
    Node* root = buildHuffmanTree(letters);
-   inOrder(root); // print in order
 
    // create a vector to store the code for each letter
    vector<int> code;
    inOrderCoding(root, code); // print the huffman codes for each letter
-
-   cout << "Program End." << endl;
 
    return 0;
 }
